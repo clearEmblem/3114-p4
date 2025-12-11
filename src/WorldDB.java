@@ -20,7 +20,8 @@ public class WorldDB implements ATC {
     /**
      * Create a brave new World.
      * 
-     * @param r A random number generator to use
+     * @param r
+     *          A random number generator to use
      */
     public WorldDB(Random r) {
         rnd = r;
@@ -46,28 +47,32 @@ public class WorldDB implements ATC {
      * @return True if the box is outside world bounds, false otherwise.
      */
     private boolean isBoxInvalid(
-            int x, int y, int z,
-            int xwid, int ywid, int zwid) {
+            int x,
+            int y,
+            int z,
+            int xwid,
+            int ywid,
+            int zwid) {
 
         return
         // Coords must be in [0, 1023]
-        (x < worldMin || y < worldMin || z < worldMin)
-                || (x >= worldMax || y >= worldMax || z >= worldMax)
+        (x < worldMin || y < worldMin || z < worldMin) || (x >= worldMax
+                || y >= worldMax || z >= worldMax)
 
-                // Widths must be in [1, 1024]
-                || (xwid < 1 || ywid < 1 || zwid < 1)
-                || (xwid > worldMax || ywid > worldMax || zwid > worldMax)
+        // Widths must be in [1, 1024]
+                || (xwid < 1 || ywid < 1 || zwid < 1) || (xwid > worldMax
+                        || ywid > worldMax || zwid > worldMax)
 
                 // Check that the *entire box* is within the world [0, 1024]
-                || (x + xwid > worldMax)
-                || (y + ywid > worldMax)
-                || (z + zwid > worldMax);
+                || (x + xwid > worldMax) || (y + ywid > worldMax) || (z
+                        + zwid > worldMax);
     }
 
     /**
      * Helper to check all object-specific parameters from testBadInput.
      * 
-     * @param a The AirObject to check.
+     * @param a
+     *          The AirObject to check.
      * @return True if any parameters are invalid, false otherwise.
      */
     private boolean isObjectParamsInvalid(AirObject a) {
@@ -77,8 +82,8 @@ public class WorldDB implements ATC {
 
         if (a instanceof AirPlane) {
             AirPlane p = (AirPlane) a;
-            if (p.getCarrier() == null || p.getFlightNum() <= 0
-                    || p.getNumEngines() <= 0) {
+            if (p.getCarrier() == null || p.getFlightNum() <= 0 || p
+                    .getNumEngines() <= 0) {
                 return true;
             }
         } else if (a instanceof Balloon) {
@@ -109,13 +114,13 @@ public class WorldDB implements ATC {
     /**
      * (Try to) insert an AirObject into the database
      * 
-     * @param a An AirObject.
+     * @param a
+     *          An AirObject.
      * @return True iff the AirObject is successfully entered into the database
      */
     public boolean add(AirObject a) {
         // 1. Validate box
-        if (a == null || isBoxInvalid(
-                a.getXorig(), a.getYorig(), a.getZorig(),
+        if (a == null || isBoxInvalid(a.getXorig(), a.getYorig(), a.getZorig(),
                 a.getXwidth(), a.getYwidth(), a.getZwidth())) {
             return false;
         }
@@ -143,7 +148,8 @@ public class WorldDB implements ATC {
     /**
      * The AirObject with this name is deleted from the database (if it exists).
      * 
-     * @param name AirObject name.
+     * @param name
+     *             AirObject name.
      * @return A string representing the AirObject, or null if no such name.
      */
     public String delete(String name) {
@@ -190,9 +196,8 @@ public class WorldDB implements ATC {
         StringBuilder sb = new StringBuilder();
 
         sb.append(bintree.print()); // already prints the node lines
-        sb.append(String.format(
-                "%d bintree nodes printed\n",
-                bintree.countNodes()));
+        sb.append(String.format("%d bintree nodes printed\n", bintree
+                .countNodes()));
 
         return sb.toString();
     }
@@ -201,7 +206,8 @@ public class WorldDB implements ATC {
     /**
      * Print an AirObject with a given name if it exists
      * 
-     * @param name The name of the AirObject to print
+     * @param name
+     *             The name of the AirObject to print
      * @return String showing the toString for the AirObject if it exists
      *         Return null if there is no such name
      */
@@ -220,8 +226,10 @@ public class WorldDB implements ATC {
      * Return a listing of the AirObjects found in the database between the
      * min and max values for names.
      * 
-     * @param start Minimum of range
-     * @param end   Maximum of range
+     * @param start
+     *              Minimum of range
+     * @param end
+     *              Maximum of range
      * @return String listing the AirObjects in the range as specified.
      *         Null if the parameters are bad
      */
@@ -234,8 +242,8 @@ public class WorldDB implements ATC {
         String results = skipList.rangeSearch(start, end);
 
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format(
-                "Found these records in the range %s to %s\r\n", start, end));
+        sb.append(String.format("Found these records in the range %s to %s\r\n",
+                start, end));
         sb.append(results);
 
         return sb.toString();
@@ -252,8 +260,8 @@ public class WorldDB implements ATC {
         CollisionResult res = bintree.collisions();
 
         return String.format(
-                "The following collisions exist in the database:\n%s",
-                res.getOutput(),
+                "The following collisions exist in the database:\n%s", res
+                        .getOutput(),
                 res.getNodesVisited());
     }
 
@@ -262,12 +270,18 @@ public class WorldDB implements ATC {
      * Return a listing of all AirObjects whose bounding boxes
      * that intersect the given bounding box.
      * 
-     * @param x    Bounding box upper left x
-     * @param y    Bounding box upper left y
-     * @param z    Bounding box upper left z
-     * @param xwid Width
-     * @param ywid Height
-     * @param zwid Depth
+     * @param x
+     *             Bounding box upper left x
+     * @param y
+     *             Bounding box upper left y
+     * @param z
+     *             Bounding box upper left z
+     * @param xwid
+     *             Width
+     * @param ywid
+     *             Height
+     * @param zwid
+     *             Depth
      * @return String listing the AirObjects that intersect the given box.
      *         Return null if any input parameters are bad
      */
@@ -282,12 +296,10 @@ public class WorldDB implements ATC {
 
         // 3. Return formatted output (minimal, same style)
         return String.format(
-                "The following objects intersect (%d %d %d %d %d %d)\n"
-                        + "%s"
+                "The following objects intersect (%d %d %d %d %d %d)\n" + "%s"
                         + "%d nodes were visited in the bintree\n",
-                x, y, z, xwid, ywid, zwid,
-                res.getMatchesString(),
-                res.getNodesVisited());
+                x, y, z, xwid, ywid,
+                zwid, res.getMatchesString(), res.getNodesVisited());
     }
 
 }
