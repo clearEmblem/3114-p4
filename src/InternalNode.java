@@ -53,18 +53,30 @@ public class InternalNode implements BinNode {
         }
 
         int half = splitSz / 2;
-        int lx = x, ly = y, lz = z, lsx = sx, lsy = sy, lsz = sz;
-        int rx = x, ry = y, rz = z, rsx = sx, rsy = sy, rsz = sz;
+        int lx = x;
+        int ly = y;
+        int lz = z;
+        int lsx = sx;
+        int lsy = sy;
+        int lsz = sz;
+        int rx = x;
+        int ry = y;
+        int rz = z;
+        int rsx = sx;
+        int rsy = sy;
+        int rsz = sz;
 
         if (dim == 0) {
             rx = x + half;
             lsx = half;
             rsx = remainingLength(sx, half);
-        } else if (dim == 1) {
+        }
+        else if (dim == 1) {
             ry = y + half;
             lsy = half;
             rsy = remainingLength(sy, half);
-        } else {
+        }
+        else {
             rz = z + half;
             lsz = half;
             rsz = remainingLength(sz, half);
@@ -108,18 +120,30 @@ public class InternalNode implements BinNode {
         }
 
         int half = splitSz / 2;
-        int lx = x, ly = y, lz = z, lsx = sx, lsy = sy, lsz = sz;
-        int rx = x, ry = y, rz = z, rsx = sx, rsy = sy, rsz = sz;
+        int lx = x;
+        int ly = y;
+        int lz = z;
+        int lsx = sx;
+        int lsy = sy;
+        int lsz = sz;
+        int rx = x;
+        int ry = y;
+        int rz = z;
+        int rsx = sx;
+        int rsy = sy;
+        int rsz = sz;
 
         if (dim == 0) {
             rx = x + half;
             lsx = half;
             rsx = sx - half;
-        } else if (dim == 1) {
+        }
+        else if (dim == 1) {
             ry = y + half;
             lsy = half;
             rsy = sy - half;
-        } else {
+        }
+        else {
             rz = z + half;
             lsz = half;
             rsz = sz - half;
@@ -146,7 +170,13 @@ public class InternalNode implements BinNode {
                 || (right instanceof EmptyLeafNode);
 
         if (lLeaf && rLeaf) {
-            AirObject[] unique = new AirObject[10];
+            int lCount = (left instanceof LeafNode)
+                    ? ((LeafNode) left).getCount()
+                    : 0;
+            int rCount = (right instanceof LeafNode)
+                    ? ((LeafNode) right).getCount()
+                    : 0;
+            AirObject[] unique = new AirObject[lCount + rCount];
             int uCount = 0;
 
             if (left instanceof LeafNode) {
@@ -208,18 +238,30 @@ public class InternalNode implements BinNode {
         }
         int half = splitSz / 2;
 
-        int lx = x, ly = y, lz = z, lsx = sx, lsy = sy, lsz = sz;
-        int rx = x, ry = y, rz = z, rsx = sx, rsy = sy, rsz = sz;
+        int lx = x;
+        int ly = y;
+        int lz = z;
+        int lsx = sx;
+        int lsy = sy;
+        int lsz = sz;
+        int rx = x;
+        int ry = y;
+        int rz = z;
+        int rsx = sx;
+        int rsy = sy;
+        int rsz = sz;
 
         if (dim == 0) {
             rx = x + half;
             lsx = half;
             rsx = sx - half;
-        } else if (dim == 1) {
+        }
+        else if (dim == 1) {
             ry = y + half;
             lsy = half;
             rsy = sy - half;
-        } else {
+        }
+        else {
             rz = z + half;
             lsz = half;
             rsz = sz - half;
@@ -260,18 +302,30 @@ public class InternalNode implements BinNode {
         }
         int half = splitSz / 2;
 
-        int lx = x, ly = y, lz = z, lsx = sx, lsy = sy, lsz = sz;
-        int rx = x, ry = y, rz = z, rsx = sx, rsy = sy, rsz = sz;
+        int lx = x;
+        int ly = y;
+        int lz = z;
+        int lsx = sx;
+        int lsy = sy;
+        int lsz = sz;
+        int rx = x;
+        int ry = y;
+        int rz = z;
+        int rsx = sx;
+        int rsy = sy;
+        int rsz = sz;
 
         if (dim == 0) {
             rx = x + half;
             lsx = half;
             rsx = sx - half;
-        } else if (dim == 1) {
+        }
+        else if (dim == 1) {
             ry = y + half;
             lsy = half;
             rsy = sy - half;
-        } else {
+        }
+        else {
             rz = z + half;
             lsz = half;
             rsz = sz - half;
@@ -300,18 +354,30 @@ public class InternalNode implements BinNode {
         int half = splitSz / 2;
         int remainder = splitSz - half;
 
-        int lx = x, ly = y, lz = z, lsx = sx, lsy = sy, lsz = sz;
-        int rx = x, ry = y, rz = z, rsx = sx, rsy = sy, rsz = sz;
+        int lx = x;
+        int ly = y;
+        int lz = z;
+        int lsx = sx;
+        int lsy = sy;
+        int lsz = sz;
+        int rx = x;
+        int ry = y;
+        int rz = z;
+        int rsx = sx;
+        int rsy = sy;
+        int rsz = sz;
 
         if (dim == 0) {
             rx = x + half;
             lsx = half;
             rsx = remainder;
-        } else if (dim == 1) {
+        }
+        else if (dim == 1) {
             ry = y + half;
             lsy = half;
             rsy = remainder;
-        } else {
+        }
+        else {
             rz = z + half;
             lsz = half;
             rsz = remainder;

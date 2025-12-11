@@ -10,8 +10,8 @@ import java.util.Random;
  */
 public class WorldDB implements ATC {
     // World bounds [0, 1023]
-    private final int WORLD_MIN = 0;
-    private final int WORLD_MAX = 1024; // [cite: 30, 34]
+    private final int worldMin = 0;
+    private final int worldMax = 1024; // [cite: 30, 34]
 
     private Random rnd;
     private SkipList<String, AirObject> skipList;
@@ -51,17 +51,17 @@ public class WorldDB implements ATC {
 
         return
         // Coords must be in [0, 1023]
-        (x < WORLD_MIN || y < WORLD_MIN || z < WORLD_MIN) ||
-                (x >= WORLD_MAX || y >= WORLD_MAX || z >= WORLD_MAX) ||
+        (x < worldMin || y < worldMin || z < worldMin) ||
+                (x >= worldMax || y >= worldMax || z >= worldMax) ||
 
                 // Widths must be in [1, 1024]
                 (xwid < 1 || ywid < 1 || zwid < 1) ||
-                (xwid > WORLD_MAX || ywid > WORLD_MAX || zwid > WORLD_MAX) ||
+                (xwid > worldMax || ywid > worldMax || zwid > worldMax) ||
 
                 // Check that the *entire box* is within the world [0, 1024]
-                (x + xwid > WORLD_MAX
-                        || y + ywid > WORLD_MAX
-                        || z + zwid > WORLD_MAX);
+                (x + xwid > worldMax
+                        || y + ywid > worldMax
+                        || z + zwid > worldMax);
     }
 
     /**

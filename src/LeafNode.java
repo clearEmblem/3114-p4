@@ -93,11 +93,18 @@ public class LeafNode implements BinNode {
 
         for (int i = 0; i < count; i++) {
             AirObject o = objects[i];
-            if (BoxUtil.intersectsStrict(
+            int[] inter = BoxUtil.intersectionBoxStrict(
                     o.getXorig(), o.getYorig(), o.getZorig(),
                     o.getXwidth(), o.getYwidth(), o.getZwidth(),
-                    qx, qy, qz, qxw, qyw, qzw)) {
-                res.addMatch(o);
+                    qx, qy, qz, qxw, qyw, qzw);
+
+            if (inter != null) {
+                // Report only if this leaf contains the origin of intersection
+                if (pointInRegionLoose(
+                        inter[0], inter[1], inter[2],
+                        x, y, z, sx, sy, sz)) {
+                    res.addMatch(o);
+                }
             }
         }
     }

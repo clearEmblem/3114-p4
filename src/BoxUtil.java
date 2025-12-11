@@ -71,7 +71,15 @@ public final class BoxUtil {
      * @return true if point is inside.
      */
     public static boolean pointInRegion(
-            int px, int py, int pz, int x, int y, int z, int sx, int sy, int sz) {
+            int px,
+            int py,
+            int pz,
+            int x,
+            int y,
+            int z,
+            int sx,
+            int sy,
+            int sz) {
 
         return (px >= x && px < x + sx)
                 && (py >= y && py < y + sy)

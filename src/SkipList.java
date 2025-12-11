@@ -200,7 +200,9 @@ public class SkipList<K extends Comparable<K>, V> {
 
         int count = 0;
         while (curr != null) {
-            String val = (curr.pair == null) ? "null" : curr.pair.getValue().toString();
+            String val = (curr.pair == null)
+                    ? "null"
+                    : curr.pair.getValue().toString();
             sb.append(String.format("Node has depth %d, Value (%s)\r\n",
                     curr.level + 1,
                     val));

@@ -23,9 +23,9 @@ public class EmptyLeafNode implements BinNode {
 
     /**
      * Inserts an AirObject into the quadtree.
-     * If the object intersects this empty region, this node transforms into a
-     * LeafNode
-     * and the object is inserted into it. Otherwise, the node remains unchanged.
+     * If the object intersects this empty region, this node transforms
+     * into a LeafNode and the object is inserted into it.
+     * Otherwise, the node remains unchanged.
      *
      * @param obj   The AirObject to insert.
      * @param level The current level of the node in the quadtree.

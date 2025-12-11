@@ -9,7 +9,12 @@
 public abstract class AirObject implements Comparable<AirObject> {
 
     private String name;
-    private int x, y, z, xwid, ywid, zwid;
+    private int x;
+    private int y;
+    private int z;
+    private int xwid;
+    private int ywid;
+    private int zwid;
 
     /**
      * Constructor for AirObject.

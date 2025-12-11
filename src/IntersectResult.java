@@ -1,6 +1,3 @@
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Collects intersection results from the Bintree.
  * 
@@ -11,13 +8,11 @@ import java.util.Set;
 public class IntersectResult {
     private int nodesVisited;
     private StringBuilder matches;
-    private Set<String> seen;
 
     /** Constructor. */
     public IntersectResult() {
         nodesVisited = 0;
         matches = new StringBuilder();
-        seen = new HashSet<>();
     }
 
     /** Increments visited node count. */
@@ -35,14 +30,15 @@ public class IntersectResult {
      * 
      * @param obj The finding.
      */
+    /**
+     * Adds a matching object.
+     * 
+     * @param obj The finding.
+     */
     public void addMatch(AirObject obj) {
         if (obj == null) {
             return;
         }
-        if (seen.contains(obj.getName())) {
-            return;
-        }
-        seen.add(obj.getName());
         matches.append(obj.toString()).append("\n");
     }
 
