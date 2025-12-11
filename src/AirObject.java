@@ -1,6 +1,10 @@
 /**
  * Abstract base class for all objects in the air.
  * Implements Comparable to be stored in the Skip List by name[cite: 31].
+ * 
+ * @author akashp
+ * @author karthikyella
+ * @version fall25
  */
 public abstract class AirObject implements Comparable<AirObject> {
 
@@ -9,22 +13,23 @@ public abstract class AirObject implements Comparable<AirObject> {
 
     /**
      * Constructor for AirObject.
+     * 
      * @param name Name of the object
-     * @param x X-coordinate
-     * @param y Y-coordinate
-     * @param z Z-coordinate
+     * @param x    X-coordinate
+     * @param y    Y-coordinate
+     * @param z    Z-coordinate
      * @param xwid X-width
      * @param ywid Y-width
      * @param zwid Z-width
      */
     public AirObject(
-        String name,
-        int x,
-        int y,
-        int z,
-        int xwid,
-        int ywid,
-        int zwid) {
+            String name,
+            int x,
+            int y,
+            int z,
+            int xwid,
+            int ywid,
+            int zwid) {
         this.name = name;
         this.x = x;
         this.y = y;
@@ -34,18 +39,60 @@ public abstract class AirObject implements Comparable<AirObject> {
         this.zwid = zwid;
     }
 
-
     // --- Getters ---
-    public int getXorig() { return x; }
-    public int getYorig() { return y; }
-    public int getZorig() { return z; }
-    public int getXwidth() { return xwid; }
-    public int getYwidth() { return ywid; }
-    public int getZwidth() { return zwid; }
-    public String getName() { return name; }
+
+    /**
+     * @return X origin
+     */
+    public int getXorig() {
+        return x;
+    }
+
+    /**
+     * @return Y origin
+     */
+    public int getYorig() {
+        return y;
+    }
+
+    /**
+     * @return Z origin
+     */
+    public int getZorig() {
+        return z;
+    }
+
+    /**
+     * @return X width
+     */
+    public int getXwidth() {
+        return xwid;
+    }
+
+    /**
+     * @return Y width
+     */
+    public int getYwidth() {
+        return ywid;
+    }
+
+    /**
+     * @return Z width
+     */
+    public int getZwidth() {
+        return zwid;
+    }
+
+    /**
+     * @return Object name
+     */
+    public String getName() {
+        return name;
+    }
 
     /**
      * Compares AirObjects based on their name[cite: 31].
+     * 
      * @param other The other AirObject to compare to.
      * @return Standard compareTo values (<0, 0, >0)
      */
@@ -57,9 +104,9 @@ public abstract class AirObject implements Comparable<AirObject> {
         return this.name.compareTo(other.getName());
     }
 
-
     /**
      * Abstract method to be implemented by all subclasses.
+     * 
      * @return String representation of the object.
      */
     @Override
