@@ -21,14 +21,13 @@ public class CoverageTest extends TestCase {
         // Insert 6 objects that all overlap perfectly -> prevents split
         // Leaf capacity is 5 init. So 6th insert triggers grow.
         for (int i = 0; i < 6; i++) {
-            AirObject a = new Drone(
-                    "d" + i, 0, 0, 0, 100, 100, 100, "D", 1);
-            leaf = (LeafNode) leaf.insert(
-                    a, 0, 0, 0, 0, 1024, 1024, 1024);
+            AirObject a = new Drone("d" + i, 0, 0, 0, 100, 100, 100, "D", 1);
+            leaf = (LeafNode)leaf.insert(a, 0, 0, 0, 0, 1024, 1024, 1024);
         }
         assertEquals(1, leaf.countNodes());
         assertEquals(6, leaf.getCount());
     }
+
 
     /** Tests removing non-existent object from LeafNode. */
     public void testLeafRemoveNonExistent() {
@@ -43,6 +42,7 @@ public class CoverageTest extends TestCase {
         assertEquals(1, leaf.getCount());
         assertEquals("d1", leaf.getObjects()[0].getName());
     }
+
 
     /** Tests removing object outside LeafNode region. */
     public void testLeafRemoveOutsideRegion() {
@@ -61,6 +61,7 @@ public class CoverageTest extends TestCase {
     // InternalNode specific coverage
     // ----------------------------------------------------------
 
+
     /** Tests InternalNode merge suppression when count > 3. */
     public void testInternalMergeFailsTooMany() {
         InternalNode node = new InternalNode();
@@ -68,27 +69,22 @@ public class CoverageTest extends TestCase {
         // Should NOT merge.
 
         // Left child (x < 512)
-        node.insert(new Drone(
-                "L1", 0, 0, 0, 10, 10, 10, "D", 1),
-                0, 0, 0, 0, 1024, 1024, 1024);
-        node.insert(new Drone(
-                "L2", 10, 0, 0, 10, 10, 10, "D", 1),
-                0, 0, 0, 0, 1024, 1024, 1024);
+        node.insert(new Drone("L1", 0, 0, 0, 10, 10, 10, "D", 1), 0, 0, 0, 0,
+            1024, 1024, 1024);
+        node.insert(new Drone("L2", 10, 0, 0, 10, 10, 10, "D", 1), 0, 0, 0, 0,
+            1024, 1024, 1024);
 
         // Right child (x >= 512)
-        node.insert(new Drone(
-                "R1", 600, 0, 0, 10, 10, 10, "D", 1),
-                0, 0, 0, 0, 1024, 1024, 1024);
-        node.insert(new Drone(
-                "R2", 610, 0, 0, 10, 10, 10, "D", 1),
-                0, 0, 0, 0, 1024, 1024, 1024);
+        node.insert(new Drone("R1", 600, 0, 0, 10, 10, 10, "D", 1), 0, 0, 0, 0,
+            1024, 1024, 1024);
+        node.insert(new Drone("R2", 610, 0, 0, 10, 10, 10, "D", 1), 0, 0, 0, 0,
+            1024, 1024, 1024);
 
         assertEquals(3, node.countNodes()); // Root + Left + Right
 
         // call remove on something non-existent to trigger check
-        node.remove(new Drone(
-                "Ghost", 0, 0, 0, 10, 10, 10, "D", 1),
-                0, 0, 0, 0, 1024, 1024, 1024);
+        node.remove(new Drone("Ghost", 0, 0, 0, 10, 10, 10, "D", 1), 0, 0, 0, 0,
+            1024, 1024, 1024);
 
         assertEquals(3, node.countNodes()); // Still 3, merge rejected
     }
@@ -96,6 +92,7 @@ public class CoverageTest extends TestCase {
     // ----------------------------------------------------------
     // Algorithm coverage (SkipList)
     // ----------------------------------------------------------
+
 
     /** Tests bad range search params in SkipList. */
     public void testSkipListRangeBad() {
@@ -114,6 +111,7 @@ public class CoverageTest extends TestCase {
     // InternalNode safety
     // ----------------------------------------------------------
 
+
     /** Tests InternalNode safety check for small split size. */
     public void testInternalSplitSzSmall() {
         // Force deeply nested insert
@@ -129,12 +127,13 @@ public class CoverageTest extends TestCase {
         // Let's verify we get a LeafNode back
         BinNode res = node.insert(a, 0, 0, 0, 0, 1, 1, 1);
         assertTrue(res instanceof LeafNode);
-        assertEquals(1, ((LeafNode) res).getCount());
+        assertEquals(1, ((LeafNode)res).getCount());
     }
 
     // ----------------------------------------------------------
     // Targeted InternalNode Mutation Coverage
     // ----------------------------------------------------------
+
 
     /**
      * Test InternalNode two-arg constructor with nulls.
@@ -148,6 +147,7 @@ public class CoverageTest extends TestCase {
         // EmptyLeafNode.countNodes() is 1. So total should be 1 + 1 + 1 = 3.
         assertEquals(3, node.countNodes());
     }
+
 
     /**
      * Test InternalNode collapsing to EmptyLeafNode.
@@ -165,6 +165,7 @@ public class CoverageTest extends TestCase {
         assertTrue(empty instanceof EmptyLeafNode);
     }
 
+
     /**
      * Test intersect at deeper levels (Z-axis).
      * Kills arithmetic mutants in intersect (lines 223, 225).
@@ -178,7 +179,7 @@ public class CoverageTest extends TestCase {
         AirObject a = new Drone("A", 10, 10, 10, 10, 10, 10, "D", 1);
         AirObject b = new Drone("B", 20, 20, 20, 10, 10, 10, "D", 1);
         AirObject c = new Drone("C", 30, 30, 30, 10, 10, 10, "D", 1);
-        AirObject d = new Drone("D", 10, 10, 600, 10, 10, 10, "D", 1); // Z > 512
+        AirObject d = new Drone("D", 10, 10, 600, 10, 10, 10, "D", 1);
 
         curr = curr.insert(a, 0, 0, 0, 0, 1024, 1024, 1024);
         curr = curr.insert(b, 0, 0, 0, 0, 1024, 1024, 1024);
@@ -187,12 +188,12 @@ public class CoverageTest extends TestCase {
 
         // Query intersect deep in Z
         IntersectResult res = new IntersectResult();
-        curr.intersect(
-                10, 10, 600, 100, 100, 100,
-                0, 0, 0, 0, 1024, 1024, 1024, res);
+        curr.intersect(10, 10, 600, 100, 100, 100, 0, 0, 0, 0, 1024, 1024, 1024,
+            res);
 
         assertTrue(res.getMatchesString().contains("D"));
     }
+
 
     /**
      * Test collisions at deeper levels (Z-axis).
@@ -203,18 +204,18 @@ public class CoverageTest extends TestCase {
         BinNode curr = root;
 
         // Force split to Z level
-        curr = curr.insert(new Drone("A", 10, 10, 10, 10, 10, 10, "D", 1),
-                0, 0, 0, 0, 1024, 1024, 1024);
-        curr = curr.insert(new Drone("B", 20, 20, 20, 10, 10, 10, "D", 1),
-                0, 0, 0, 0, 1024, 1024, 1024);
-        curr = curr.insert(new Drone("C", 30, 30, 30, 10, 10, 10, "D", 1),
-                0, 0, 0, 0, 1024, 1024, 1024);
+        curr = curr.insert(new Drone("A", 10, 10, 10, 10, 10, 10, "D", 1), 0, 0,
+            0, 0, 1024, 1024, 1024);
+        curr = curr.insert(new Drone("B", 20, 20, 20, 10, 10, 10, "D", 1), 0, 0,
+            0, 0, 1024, 1024, 1024);
+        curr = curr.insert(new Drone("C", 30, 30, 30, 10, 10, 10, "D", 1), 0, 0,
+            0, 0, 1024, 1024, 1024);
 
         // Add colliding pair deep in Z (> 512)
-        curr = curr.insert(new Drone("D1", 10, 10, 600, 10, 10, 10, "D", 1),
-                0, 0, 0, 0, 1024, 1024, 1024);
-        curr = curr.insert(new Drone("D2", 15, 15, 605, 10, 10, 10, "D", 1),
-                0, 0, 0, 0, 1024, 1024, 1024);
+        curr = curr.insert(new Drone("D1", 10, 10, 600, 10, 10, 10, "D", 1), 0,
+            0, 0, 0, 1024, 1024, 1024);
+        curr = curr.insert(new Drone("D2", 15, 15, 605, 10, 10, 10, "D", 1), 0,
+            0, 0, 0, 1024, 1024, 1024);
 
         CollisionResult res = new CollisionResult();
         curr.collisions(0, 0, 0, 0, 1024, 1024, 1024, res);
@@ -226,6 +227,7 @@ public class CoverageTest extends TestCase {
     // ----------------------------------------------------------
     // RngCheck Coverage
     // ----------------------------------------------------------
+
 
     /**
      * Run RngCheck main to cover its mutants.
@@ -239,6 +241,7 @@ public class CoverageTest extends TestCase {
     // Phase 2: BoxUtil Arithmetic & Boundary Coverage
     // ----------------------------------------------------------
 
+
     /**
      * Test BoxUtil.intersectsStrict with touching vs overlapping boxes.
      * Kills boundary mutants (< vs <=) and arithmetic mutants.
@@ -249,47 +252,53 @@ public class CoverageTest extends TestCase {
         // 1. Touching on X face (should be false)
         // Box A: [0, 10)
         // Box B: [10, 20)
-        assertFalse(BoxUtil.intersectsStrict(0, 0, 0, 10, 10, 10,
-                10, 0, 0, 10, 10, 10));
+        assertFalse(BoxUtil.intersectsStrict(0, 0, 0, 10, 10, 10, 10, 0, 0, 10,
+            10, 10));
 
         // 2. Overlapping by 1 unit (should be true)
         // Box B: [9, 19)
-        assertTrue(BoxUtil.intersectsStrict(0, 0, 0, 10, 10, 10,
-                9, 0, 0, 10, 10, 10));
+        assertTrue(BoxUtil.intersectsStrict(0, 0, 0, 10, 10, 10, 9, 0, 0, 10,
+            10, 10));
 
         // 3. Point in region strict
         // Region: [0, 10)
-        assertTrue(BoxUtil.pointInRegion(0, 0, 0, 0, 0, 0, 10, 10, 10)); // On start edge
+        assertTrue(BoxUtil.pointInRegion(0, 0, 0, 0, 0, 0, 10, 10, 10)); // On
+                                                                         // start
+                                                                         // edge
         assertTrue(BoxUtil.pointInRegion(9, 9, 9, 0, 0, 0, 10, 10, 10)); // Inside
-        assertFalse(BoxUtil.pointInRegion(10, 0, 0, 0, 0, 0, 10, 10, 10)); // On end edge (exclusive)
+        assertFalse(BoxUtil.pointInRegion(10, 0, 0, 0, 0, 0, 10, 10, 10)); // On
+                                                                           // end
+                                                                           // edge
+                                                                           // (exclusive)
     }
+
 
     /**
      * Test intersectionBoxStrict logic.
      */
     public void testIntersectionBoxLogic() {
         // Touching boxes return null (no volume)
-        int[] res = BoxUtil.intersectionBoxStrict(0, 0, 0, 10, 10, 10,
-                10, 0, 0, 10, 10, 10);
+        int[] res = BoxUtil.intersectionBoxStrict(0, 0, 0, 10, 10, 10, 10, 0, 0,
+            10, 10, 10);
         assertNull(res);
 
         // Overlapping boxes return correct box
         // A: [0, 10), B: [5, 15) -> Intersect [5, 10) width 5
-        res = BoxUtil.intersectionBoxStrict(0, 0, 0, 10, 10, 10,
-                5, 0, 0, 10, 10, 10);
+        res = BoxUtil.intersectionBoxStrict(0, 0, 0, 10, 10, 10, 5, 0, 0, 10,
+            10, 10);
         assertNotNull(res);
         assertEquals(5, res[0]); // x
         assertEquals(5, res[3]); // width
     }
 
+
     /**
      * Test commonIntersectionStrict loop mutants.
      */
     public void testCommonIntersection() {
-        AirObject[] objs = new AirObject[] {
-                new Drone("A", 0, 0, 0, 10, 10, 10, "D", 1),
-                new Drone("B", 5, 0, 0, 10, 10, 10, "D", 1),
-                new Drone("C", 80, 80, 80, 10, 10, 10, "D", 1) // Disjoint
+        AirObject[] objs = new AirObject[] { new Drone("A", 0, 0, 0, 10, 10, 10,
+            "D", 1), new Drone("B", 5, 0, 0, 10, 10, 10, "D", 1), new Drone("C",
+                80, 80, 80, 10, 10, 10, "D", 1) // Disjoint
         };
 
         // First two overlap
@@ -309,8 +318,10 @@ public class CoverageTest extends TestCase {
     // Phase 2: EmptyLeafNode Level Checks
     // ----------------------------------------------------------
 
+
     /**
-     * Test EmptyLeafNode methods with specific levels to kill conditional mutants.
+     * Test EmptyLeafNode methods with specific levels to kill conditional
+     * mutants.
      */
     public void testEmptyLeafLevelChecks() {
         EmptyLeafNode node = EmptyLeafNode.getInstance();
@@ -318,8 +329,10 @@ public class CoverageTest extends TestCase {
 
         // Level 0: Should NOT add message
         node.intersect(0, 0, 0, 100, 100, 100, 0, 0, 0, 0, 10, 10, 10, iRes);
-        // String msg0 = iRes.getMatchesString(); // assuming this gets the output
-        // Based on IntersectResult code (not visible but standard), unlikely to have
+        // String msg0 = iRes.getMatchesString(); // assuming this gets the
+        // output
+        // Based on IntersectResult code (not visible but standard), unlikely to
+        // have
         // message if count is 0?
         // Actually InternalNode only calls this if intersecting.
         // If message added, length changes.
@@ -339,6 +352,7 @@ public class CoverageTest extends TestCase {
 
         assertTrue(v1 > v0);
     }
+
 
     /**
      * Test EmptyLeafNode.insert returning this vs new LeafNode.
@@ -362,13 +376,15 @@ public class CoverageTest extends TestCase {
     // Phase 2: Value Object Classes
     // ----------------------------------------------------------
 
+
     /**
      * Test AirObject compareTo null check.
      * Kills line 101 mutant.
      */
     public void testAirObjectCompareToNull() {
         AirObject a = new Drone("d", 0, 0, 0, 10, 10, 10, "D", 1);
-        // Depending on implementation, might return 1 or throw or something else.
+        // Depending on implementation, might return 1 or throw or something
+        // else.
         // Code says: if (other == null) return 1;
         // Mutant replaces with false -> crashes with NPE on other.getName()
         assertEquals(1, a.compareTo(null));
@@ -382,6 +398,7 @@ public class CoverageTest extends TestCase {
     // Phase 3: Advanced InternalNode & BoxUtil
     // ----------------------------------------------------------
 
+
     /**
      * Test BoxUtil partial overlaps (2 dims overlap, 1 does not).
      * Kills conditional mutants in intersectsStrict (&& vs ||).
@@ -391,17 +408,18 @@ public class CoverageTest extends TestCase {
 
         // 1. Overlap X and Y, disjoint Z
         // Box B: [0, 10), [0, 10), [20, 30)
-        assertFalse(BoxUtil.intersectsStrict(0, 0, 0, 10, 10, 10,
-                0, 0, 20, 10, 10, 10));
+        assertFalse(BoxUtil.intersectsStrict(0, 0, 0, 10, 10, 10, 0, 0, 20, 10,
+            10, 10));
 
         // 2. Overlap X and Z, disjoint Y
-        assertFalse(BoxUtil.intersectsStrict(0, 0, 0, 10, 10, 10,
-                0, 20, 0, 10, 10, 10));
+        assertFalse(BoxUtil.intersectsStrict(0, 0, 0, 10, 10, 10, 0, 20, 0, 10,
+            10, 10));
 
         // 3. Overlap Y and Z, disjoint X
-        assertFalse(BoxUtil.intersectsStrict(0, 0, 0, 10, 10, 10,
-                20, 0, 0, 10, 10, 10));
+        assertFalse(BoxUtil.intersectsStrict(0, 0, 0, 10, 10, 10, 20, 0, 0, 10,
+            10, 10));
     }
+
 
     /**
      * Test InternalNode constructor satisfying standard assignment.
@@ -415,24 +433,26 @@ public class CoverageTest extends TestCase {
         // If it replaced valid children with EmptyLeafNode, count would be 1.
         // empty leaf count = 1.
         // leaf count (empty) = 1 (calls countNodes -> 1 for self)
-        // Wait, LeafNode.countNodes returns 1 + objects? No, usually just 1 node.
+        // Wait, LeafNode.countNodes returns 1 + objects? No, usually just 1
+        // node.
         // Let's verify LeafNode structure via traversal or side-effects.
 
         // Better check: insert something into "l" before constructing.
-        l.insert(new Drone("d", 0, 0, 0, 10, 10, 10, "D", 1),
-                0, 0, 0, 0, 1024, 1024, 1024);
+        l.insert(new Drone("d", 0, 0, 0, 10, 10, 10, "D", 1), 0, 0, 0, 0, 1024,
+            1024, 1024);
 
         // Now if InternalNode kept it, finding "d" should work.
         // But InternalNode.print or InternalNode.intersect delegates.
 
         // Let's use intersect to verify "d" is reachable.
         IntersectResult res = new IntersectResult();
-        node.intersect(0, 0, 0, 100, 100, 100,
-                0, 0, 0, 0, 1024, 1024, 1024, res);
+        node.intersect(0, 0, 0, 100, 100, 100, 0, 0, 0, 0, 1024, 1024, 1024,
+            res);
 
         // If "d" is found, the child was preserved.
         assertTrue(res.getMatchesString().contains("d"));
     }
+
 
     /**
      * Test InternalNode dimension selection logic (line 48).
@@ -504,9 +524,9 @@ public class CoverageTest extends TestCase {
 
         // Let's trust the "I ... \n Leaf" sequence.
         // Left child comes immediately after Internal node header.
-        assertTrue("Should split on X (Level 0), putting (20,6,0) in Left",
-                p.contains("I (0, 0, 0, 100, 10, 10) 0\r\n"
-                        + "Leaf with 1 objects"));
+        assertTrue("Should split on X (Level 0), putting (20,6,0) in Left", p
+            .contains("I (0, 0, 0, 100, 10, 10) 0\r\n"
+                + "Leaf with 1 objects"));
 
         // Repeat for Level 1 (Y split).
         // sx=10, sy=100, sz=10.
@@ -517,10 +537,11 @@ public class CoverageTest extends TestCase {
         node3.insert(discY, 1, 0, 0, 0, 10, 100, 10);
 
         String p3 = node3.print(1, 0, 0, 0, 10, 100, 10).toString();
-        assertTrue("Should split on Y (Level 1), putting (6,20,0) in Left",
-                p3.contains("I (0, 0, 0, 10, 100, 10) 1\r\n"
-                        + "Leaf with 1 objects"));
+        assertTrue("Should split on Y (Level 1), putting (6,20,0) in Left", p3
+            .contains("I (0, 0, 0, 10, 100, 10) 1\r\n"
+                + "Leaf with 1 objects"));
     }
+
 
     /**
      * Test InternalNode bounds rejection (remainingLength).
@@ -543,8 +564,8 @@ public class CoverageTest extends TestCase {
         node.insert(outBounds, 0, 0, 0, 0, 100, 100, 100);
 
         String p = node.print(0, 0, 0, 0, 100, 100, 100).toString();
-        assertFalse("Object at 110 should not be in tree of width 100",
-                p.contains("O"));
+        assertFalse("Object at 110 should not be in tree of width 100", p
+            .contains("O"));
 
         assertTrue("Object at 60 should be in tree", p.contains("R"));
     }
@@ -552,6 +573,7 @@ public class CoverageTest extends TestCase {
     // ----------------------------------------------------------
     // Phase 4: LeafNode, IntersectResult, SkipList, RngCheck
     // ----------------------------------------------------------
+
 
     /**
      * Test LeafNode.remove with an object that has matching name but
@@ -568,7 +590,8 @@ public class CoverageTest extends TestCase {
 
         // Try to remove "Target" but using coordinates clearly OUTSIDE.
         // Region: 0-100. Leaf checks intersection with region?
-        // No, LeafNode line 166 checks: BoxUtil.objectIntersectsRegionStrict(obj, x,
+        // No, LeafNode line 166 checks:
+        // BoxUtil.objectIntersectsRegionStrict(obj, x,
         // y...)
         // i.e., does the *removal candidate object* intersect the node region?
 
@@ -577,12 +600,15 @@ public class CoverageTest extends TestCase {
 
         leaf.remove(out, 0, 0, 0, 0, 100, 100, 100);
 
-        // If check passes (mutant), it finds "Target" by name and removes it -> count
+        // If check passes (mutant), it finds "Target" by name and removes it ->
+        // count
         // 0.
         // If check works (correct), it returns early -> count 1.
-        assertEquals("Should not remove object if query coordinates don't intersect node",
-                1, leaf.getCount());
+        assertEquals(
+            "Should not remove object if query coordinates don't intersect node",
+            1, leaf.getCount());
     }
+
 
     /**
      * Test LeafNode.insert with non-intersecting object.
@@ -596,6 +622,7 @@ public class CoverageTest extends TestCase {
         assertEquals(0, leaf.getCount());
     }
 
+
     /**
      * Test IntersectResult.addMatch with null.
      * Kills IntersectResult line 39 mutant (null check).
@@ -605,6 +632,7 @@ public class CoverageTest extends TestCase {
         res.addMatch(null); // Should not throw
         assertEquals("", res.getMatchesString());
     }
+
 
     /**
      * Test SkipList.remove for missing key.
@@ -624,6 +652,7 @@ public class CoverageTest extends TestCase {
         assertEquals("ValueB", sl.find("B"));
     }
 
+
     /**
      * Test RngCheck main output.
      * Kills mutants that change loop conditions (resulting in 0 levels/visits).
@@ -635,15 +664,16 @@ public class CoverageTest extends TestCase {
 
         try {
             RngCheck.main(new String[] {});
-        } finally {
+        }
+        finally {
             System.setOut(originalOut);
         }
 
         String output = out.toString();
         // Check for expected "MATCH" strings indicating correct logic execution
         // We expect "MATCH" for B1, Air1, Air2, Ptero.
-        assertTrue("RngCheck output should contain verification matches",
-                output.contains("MATCH"));
+        assertTrue("RngCheck output should contain verification matches", output
+            .contains("MATCH"));
         // Check specific failures if possible
         assertTrue(output.contains("B1: 1 MATCH"));
     }
@@ -651,6 +681,7 @@ public class CoverageTest extends TestCase {
     // ----------------------------------------------------------
     // Phase 5: WorldDB Validation & Logic
     // ----------------------------------------------------------
+
 
     /**
      * Test WorldDB.add with valid and invalid boxes.
@@ -689,6 +720,7 @@ public class CoverageTest extends TestCase {
         assertFalse(w.add(new Drone("D10", 1000, 0, 0, 25, 10, 10, "B", 1)));
     }
 
+
     /**
      * Test WorldDB null and bad param handling.
      * Kills null checks and logical expression mutants.
@@ -704,15 +736,17 @@ public class CoverageTest extends TestCase {
         assertFalse(w.add(new Drone("D1", 50, 50, 50, 10, 10, 10, "B", 1)));
 
         // Invalid Object Params
-        assertFalse(w.add(new Drone(null, 0, 0, 0, 10, 10, 10, "B", 1))); // Null name
-        assertFalse(w.add(new Drone("", 0, 0, 0, 10, 10, 10, "B", 1))); // Empty name
+        assertFalse(w.add(new Drone(null, 0, 0, 0, 10, 10, 10, "B", 1))); // Null
+                                                                          // name
+        assertFalse(w.add(new Drone("", 0, 0, 0, 10, 10, 10, "B", 1))); // Empty
+                                                                        // name
 
         // Specific class validation
         // Airplane bad params
-        assertFalse(w.add(new AirPlane(
-                "P1", 0, 0, 0, 10, 10, 10, null, 1, 1))); // Null carrier
-        assertFalse(w.add(new AirPlane(
-                "P2", 0, 0, 0, 10, 10, 10, "C", 0, 1))); // Bad flightNum
+        assertFalse(w.add(new AirPlane("P1", 0, 0, 0, 10, 10, 10, null, 1, 1))); // Null
+                                                                                 // carrier
+        assertFalse(w.add(new AirPlane("P2", 0, 0, 0, 10, 10, 10, "C", 0, 1))); // Bad
+                                                                                // flightNum
 
         // Null checks in methods
         assertNull(w.delete(null));
