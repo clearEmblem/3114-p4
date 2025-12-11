@@ -51,17 +51,17 @@ public class WorldDB implements ATC {
 
         return
         // Coords must be in [0, 1023]
-        (x < worldMin || y < worldMin || z < worldMin) ||
-                (x >= worldMax || y >= worldMax || z >= worldMax) ||
+        (x < worldMin || y < worldMin || z < worldMin)
+                || (x >= worldMax || y >= worldMax || z >= worldMax)
 
                 // Widths must be in [1, 1024]
-                (xwid < 1 || ywid < 1 || zwid < 1) ||
-                (xwid > worldMax || ywid > worldMax || zwid > worldMax) ||
+                || (xwid < 1 || ywid < 1 || zwid < 1)
+                || (xwid > worldMax || ywid > worldMax || zwid > worldMax)
 
                 // Check that the *entire box* is within the world [0, 1024]
-                (x + xwid > worldMax
-                        || y + ywid > worldMax
-                        || z + zwid > worldMax);
+                || (x + xwid > worldMax)
+                || (y + ywid > worldMax)
+                || (z + zwid > worldMax);
     }
 
     /**
