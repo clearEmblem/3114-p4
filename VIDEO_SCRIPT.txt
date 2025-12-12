@@ -1,0 +1,41 @@
+
+Hi, this is akash and this is my video for the Air Traffic Control project.
+
+The objective of this project was to create a database management system for aircraft in a 3D space. The core challenge was efficiently managing these objects in two ways simultaneously: by name using a SkipList, and by physical location using a 3D BinTree.
+
+Initially, I found understanding the 3D interpretation of the BinTree confusing—specifically how the splitting dimensions cycle compared to a standard 2D quadtree. However, once I visualized the box splitting sequentially from X to Y to Z, the implementation became much clearer.
+
+Let’s walk through the class structure. I designed this using a few key patterns to keep the code clean.
+
+First, World D B acts as my main class. It handles all input validation and coordinates actions between the SkipList and the Bintree. This separation of concerns ensures the data structures don't strictly depend on each other; they just store shared object references.
+
+For the Bintree, I used the Composite Design Pattern. I have an interface BinNode, and three implementations:
+First, InternalNode, which handles the recursive logic of splitting the world and delegating work to children.
+Second, LeafNode, which stores the actual AirObjects. I used a Linked List approach here to store objects that share a region.
+Third, EmptyLeafNode. This is a Flyweight implementation. Since all empty nodes are identical, I use a single static instance to save memory instead of creating thousands of empty objects.
+
+Finally, I have AirObject as an abstract parent class with subclasses like Drone and Airplane. This polymorphism lets me treat all aircraft uniformly when checking for collisions.
+
+Moving on to implementation details. The primary data structure for spatial queries is the 3D BinTree.
+
+A key deviation from standard implementations is how I handled the Project Rubric's specific intersection rules. The rubric requires that we don't report the same object multiple times for a single query, even if it spans multiple nodes.
+
+To solve this efficiently, I implemented the 'Origin Rule'. In my LeafNode, I only report an intersection if the *origin* of the intersection box falls within that specific leaf node's region. This ensures that even if an airplane overlaps three nodes, it is only properly 'counted' by exactly one node.
+
+For Time Complexity, the SkipList operations are expected to be Big O of log n on average due to randomized leveling. For the Bintree, spatial queries are generally logarithmic with respect to the volume of space. However, in worst-case scenarios—like all objects stacking in one spot—it could degrade to linear time relative to the number of objects in that crowded node.
+
+For testing, I didn't just rely on the public tests. I built a comprehensive suite called CoverageTest.
+
+My methodology was to target logic-heavy classes first. For Box Util, which contains all the math for overlaps, I wrote specific tests for 'off-by-one' errors—explicitly distinguishing between objects that validly touch versus those that strictly overlap.
+
+A significant edge case I encountered was Collision Reporting. I initially had issues where recursive calls would report the same collision pair twice (A hits B, and then B hits A). To fix this, I added logic to ensure we only report the pair once by enforcing a consistent ordering. I verified this by running mutation tests; changing any comparison operator caused an immediate test failure, confirming my coverage.
+
+Finally, regarding LLM usage—I utilized an AI assistant called antigravity for this project, primarily acting as a pair programmer.
+
+It was incredibly helpful for two specific things:
+First, Debugging Checkstyle Errors. It saved me hours fixing indentation and brace placement to meet the strict course style guide.
+Second, Generating Test Boilerplate. It helped generate skeleton code for unit tests, allowing me to focus my energy on the complex logic tests for the Bintree recursion.
+
+However, I did encounter problems where the AI would sometimes suggest using standard Java library features—like Hash Set for tracking duplicates—that were explicitly forbidden by the project rules. I had to manually catch these and refactor the design to use the 'Origin Rule' algorithm instead.
+
+That covers my implementation. Thank you for watching.
